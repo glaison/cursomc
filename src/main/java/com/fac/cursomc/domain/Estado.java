@@ -9,39 +9,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.OneToMany;
 
-
-// o serializble, serve para dizer a classe categoria que os objetos podem ser convertidos para uma sequencia de bytes
-// pra que serve ? para gravar em arquivo, para navegar na rede.
-
-
-
-@Entity 
-public class Categoria implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+@Entity
+public class Estado implements Serializable{
+	private static final long serialVersionUID = 1L;	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Integer id;
+	
 	private String nome;
 	
-	@JsonManagedReference
-	@ManyToMany(mappedBy="categorias")
-	private List<Produto> produtos = new ArrayList<>();
+	@OneToMany(mappedBy="estado")
+	private List<Cidade> cidades = new ArrayList<>();
 	
 	
-	//construtor da classe - Instancia os objs sem jogar valores para os atributos.
-	public Categoria() {
+	public Estado() {
+		
 		
 	}
 
 
-	public Categoria(Integer id, String nome) {
+	public Estado(Integer id, String nome, List<Cidade> cidades) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		
 	}
 
 
@@ -63,19 +57,17 @@ public class Categoria implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	
-	public List<Produto> getProdutos() {
-		return produtos;
+
+
+	public List<Cidade> getCidades() {
+		return cidades;
 	}
 
-	
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}
-	
 
-	//hascode para comparação entre dois objetos - Padrão do java, colocar somente o id
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -91,12 +83,10 @@ public class Categoria implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Estado other = (Estado) obj;
 		return Objects.equals(id, other.id);
 	}
-
-
-
+	
 	
 
 }
